@@ -24,8 +24,8 @@ source("plotT.R")
 1. Understand whether data is considered paired or from two independent samples.
 
 ### R Learning Objectives
-1. Interpret R output providing confidence intervals and hypothesis tests for inference on population means.
-1. Use R as a calculator to compute a confidence interval.
+1. Create a "difference" variable in a data.frame
+1. Learn how to use R to perform paired t-tests and t-tests for two independent samples.
 
 
 ### Functions covered in this lab
@@ -73,7 +73,7 @@ The answer is *replace this text with your answer* because *replace this text wi
 
 #### Scenario 3
 
-Are more cookies made at MoJo than at East Quad, on average? A UM student decides to select a random smaple of 30 days from the Winter 2019 semester. For each of those 30 days, they ask each dining hall to report the number of cookies baked. These results will be used to assess whether more cookies are made at MoJo than at East Quad, on average.
+Are more cookies made at MoJo than at East Quad, on average? A UM student decides to select a random sample of 30 days from the Winter 2019 semester. For each of those 30 days, they ask each dining hall to report the number of cookies baked. These results will be used to assess whether more cookies are made at MoJo than at East Quad, on average.
 
 (a) One-sample Z-test for a population proportion
 (b) Two-sample Z-test for the comparison of two population proportions
@@ -117,7 +117,7 @@ textbooks <- read.csv("textbooks.csv")
 head(textbooks)
 ```
 
-Each textbook has two prices: one price for the UCLA bookstore (`ucla_new`) and one price for Amazon. There is a natural correspondance between these prices, since they're for the same book! So we'll pair the data. 
+Each textbook has two prices: one price for the UCLA bookstore (`ucla_new`) and one price for Amazon. There is a natural correspondence between these prices, since they're for the same book! So we'll pair the data. 
 
 A paired t-test uses the same procedure as a t-test for one population mean, just using an average *difference*. The test statistic is $$t = \frac{\bar{x}_{\text{diff}} - \mu_{0}}{s_{\text{diff}} / \sqrt{n}}.$$
 
@@ -164,7 +164,6 @@ t.test(textbooks$diff, mu = 0, alternative = "two.sided")
 
 ```{r penguins}
 penguins <- read.csv("https://raw.githubusercontent.com/STATS250SBI/palmerpenguins/master/inst/extdata/penguins_NArm.csv")
-str(penguins)
 ```
 
 Remember this bimodal histogram from last week?
@@ -190,12 +189,11 @@ $H_0:$ Replace this text with your null hypothesis.
 
 $H_a:$ Replace this text with your alternative hypothesis.
 
-
-
 Before we proceed, we'll subset the data to just involve Adelie and Chinstrap penguins.
 
 ```{r penguinsSubset}
 penguinsSubset <- subset(penguins, species %in% c("Adelie", "Chinstrap"))
+table(penguinsSubset$species)
 ```
 
 In order to use our machinery for constructing confidence intervals and performing hypothesis tests for the difference in two means, we need some conditions to hold. **What are they?**
@@ -285,6 +283,7 @@ Depending on your instruction method (synchronous remote, asynchronous remote), 
 In 2004, the state of North Carolina released a large data set containing information on births recorded in this state. This data set is useful to researchers studying the relation between habits and practices of expectant mothers and the birth of their children. We will work with a random sample of observations from this data set.
 
 ```{r readData2}
+births <- read.csv("births.csv", stringsAsFactors = T)
 ```
 
 >**1.** We're going to perform a paired t-test to evaluate the average difference in mother's age and father's age for the population of births in North Carolina in 2004. Clearly state your hypotheses.
